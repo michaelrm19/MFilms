@@ -25,6 +25,10 @@ const Sidebar = ({ setMobileOpen }) => {
   const { data, isFetching } = useGetGenresQuery();
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [genreIdOrCategoryName]);
+
   return (
     <>
       <Link to="/" className={classes.imageLink}>
@@ -45,7 +49,6 @@ const Sidebar = ({ setMobileOpen }) => {
               </ListItemIcon>
               <ListItemText primary={label} />
             </ListItem>
-
           </Link>
         ))}
       </List>

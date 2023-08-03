@@ -23,6 +23,7 @@ const MovieInformation = () => {
   const { data: favoriteMovies } = useGetListQuery({ listName: 'favorite/movies', accountId: user.id, sessionId: localStorage.getItem('session_id'), page: 1 });
   const { data: watchlistMovies } = useGetListQuery({ listName: 'watchlist/movies', accountId: user.id, sessionId: localStorage.getItem('session_id'), page: 1 });
   const { data: recommendations, isFetching: isRecommendationsFetching } = useGetRecommendationsQuery({ list: '/recommendations', movie_id: id });
+
   const [isMovieFavorited, setIsMovieFavorited] = useState(false);
   const [isMovieWatchlisted, setIsMovieWatchlisted] = useState(false);
 
@@ -44,6 +45,8 @@ const MovieInformation = () => {
     setIsMovieFavorited((prev) => !prev);
   };
 
+  console.log({ isMovieWatchlisted });
+
   const addToWatchlist = async () => {
     await axios.post(`https://api.themoviedb.org/3/account/${user.id}/watchlist?api_key=${process.env.REACT_APP_TMDB_KEY}&session_id=${localStorage.getItem('session_id')}`, {
       media_type: 'movie',
@@ -61,12 +64,11 @@ const MovieInformation = () => {
       </Box>
     );
   }
+
   if (error) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center">
-        <Link to="/">
-          Something has gone wrong - Go back
-        </Link>
+        <Link to="/">Something has gone wrong - Go back</Link>
       </Box>
     );
   }
@@ -100,13 +102,18 @@ const MovieInformation = () => {
         </Grid>
         <Grid item className={classes.genresContainer}>
           {data?.genres?.map((genre) => (
-            <Link key={genre.name} className={classes.links} to="/" onClick={() => dispatch(selectGenreOrCategory(genre.id))}>
+            <Link
+              key={genre.name}
+              className={classes.links}
+              to="/"
+              onClick={() => dispatch(selectGenreOrCategory(genre.id))}
+            >
               <img src={genreIcons[genre.name.toLowerCase()]} className={classes.genreImage} height={30} />
               <Typography color="textPrimary" variant="subtitle1">
                 {genre?.name}
               </Typography>
             </Link>
-          ))}
+          )) }
         </Grid>
         <Typography variant="h5" gutterBottom style={{ marginTop: '10px' }}>
           Overview
@@ -114,9 +121,7 @@ const MovieInformation = () => {
         <Typography style={{ marginBottom: '2rem' }}>
           {data?.overview}
         </Typography>
-        <Typography variant="h5" gutterBottom>
-          Top Cast
-        </Typography>
+        <Typography variant="h5" gutterBottom>Top Cast</Typography>
         <Grid item container spacing={2}>
           {data && data.credits.cast.map((character, i) => (
             character.profile_path && (
@@ -159,11 +164,11 @@ const MovieInformation = () => {
       </Grid>
       <Box marginTop="5rem" width="100%">
         <Typography variant="h3" gutterBottom align="center">
-          You may also like
+          You might also like
         </Typography>
         {recommendations
           ? <MovieList movies={recommendations} numberOfMovies={12} />
-          : <Box> Sorry, nothing was found. </Box>}
+          : <Box>Sorry, nothing was found.</Box>}
       </Box>
       <Modal
         closeAfterTransition

@@ -13,7 +13,7 @@ export default makeStyles((theme) => ({
   poster: {
     borderRadius: '20px',
     boxShadow: '0.5em 1em 1em rgb(64, 64, 70)',
-    width: '80%',
+    width: '100%',
     [theme.breakpoints.down('md')]: {
       margin: '0 auto',
       width: '50%',
@@ -41,7 +41,7 @@ export default makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     textDecoration: 'none',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       padding: '0.5rem 1rem',
     },
   },
@@ -62,7 +62,7 @@ export default makeStyles((theme) => ({
   },
   modal: {
     display: 'flex',
-    alignItem: 'center',
+    alignItems: 'center',
     justifyContent: 'center',
   },
   video: {
